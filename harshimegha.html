@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang = "en">
+<html>
+    <h1 id="head">
+        TELUGU POS TAGGER
+    </h1>
+<head>
+    <meta charset ="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name = "viewport" content="width=device-width,initial-scale=1.0" />
+    <title>TELUGU POS TAGGER</title>
+  <style>
+    #head{
+        background-color:black;
+        padding:50px;
+        text-align: center;
+    }
+    body {
+        color:white;
+        background-color:gray;
+        background-repeat: no-repeat;
+        background-position:center;
+        background-size: cover;
+        
+      /*background-image: url(BG.jpg);
+      /*background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: scroll;
+      background-position:center;*/
+      
+      /*background-size: cover;
+      
+      */
+      
+    }
+    
+    .center-box {
+      position: absolute;
+      left: 50%;
+      top: 62%;
+      transform: translate(-50%, -50%);
+      background-color:rgb(82, 78, 78);
+      color:white;
+      width: 400px;
+      height: 400px;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+      border-radius: 30px;
+      
+    }
+    
+    input[type="text"] {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 30px;
+    }
+    .typewriter{
+        margin-bottom:50px;
+    }
+    
+    button {
+      padding: 10px;
+      margin-top:100px;
+      background-color: rgb(253, 37, 37);
+      color: white;
+      border: none;
+      width:100px;
+      cursor: pointer;
+      border-radius: 30px;
+      
+    }
+    
+    
+  </style>
+</head>
+<body>
+  <div class="center-box">
+    <h1>Enter a sentence:</h1>
+    <input type="text" id="input-sentence">
+    <p class="typewriter">megha</p>
+   
+    <button onclick="processSentence()">Submit</button>
+    
+  </div>
+
+  
+</body>
+</html>
