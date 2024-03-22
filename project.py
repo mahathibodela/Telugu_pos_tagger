@@ -45,6 +45,7 @@ def predict():
         print(i)
       onehot_rep_input=[one_hot(text,2267)]
       input_codded=pad_sequences(onehot_rep_input,padding="post",maxlen=30)
+      print(input_codded)
       print(len(onehot_rep_input[0]))
       m=len(onehot_rep_input[0])
       # print(onehot_rep_input)
