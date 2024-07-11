@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
+import tensorflow
 from tensorflow.keras.preprocessing.text import one_hot
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
