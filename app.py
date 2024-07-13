@@ -1,4 +1,4 @@
-import streamlit as st
+
 import numpy as np
 import pickle
 import tensorflow
@@ -26,27 +26,34 @@ tags2id = {
     18: 'VM',
     19: 'WQ'
 }
+import streamlit as st
+columns = st.columns(2)
+with columns[0]:
+    with st.container(border=True):
+        st.session_state.input_text = st.text_area('Enter your text:')
+with columns[1]:
+    with st.container(border=True):
+        if st.button(label='Generate Tags'):
+            with st.status('loading model', expanded=True):
+                model=pickle.load(open('models/model.pkl','rb'))
+                "Model loaded"
+            with st.status('predicting POS tags', expanded = True):
+                split_text = st.session_state.input_text.split()
+                decoded_input = st.session_state.input_text.encode('utf-8').decode('utf-8')
+                onehot_rep_input=[one_hot(st.session_state.input_text,2267)]
+                m=len(onehot_rep_input[0])
+                input_codded=pad_sequences(onehot_rep_input,padding="post",maxlen=30)
+                list_input=model.predict(input_codded)
+                list_input = np.argmax(list_input, axis=-1)
+                hashmap = dict()
+                for i in range(0,m):
+                    hashmap[split_text[i]]=tags2id[list_input[0][i]]
+                output_list = hashmap.items()
+                output_list = [f'{item}' for item in output_list]
+                output = ','.join(output_list)
+                'The output being: '
+                with st.container(border=True):
+                    f'{output}'
 
-# Load your model
-model = pickle.load(open('models/model.pkl', 'rb'))
 
-def predict_tags(text):
-    new = text.split()
-    onehot_rep_input = [one_hot(text, 2267)]
-    input_encoded = pad_sequences(onehot_rep_input, padding="post", maxlen=30)
-    list_input = model.predict(input_encoded)
-    p = np.argmax(list_input, axis=-1)[0]
-    return {word: tags2id[tag_id] for word, tag_id in zip(new, p)}
 
-def main():
-    st.title('POS Tagging Prediction')
-
-    text_input = st.text_area('Enter your text:')
-    if st.button('Predict'):
-        if text_input:
-            predictions = predict_tags(text_input)
-            st.write('Predicted Tags:')
-            st.write(predictions)
-
-if __name__ == '__main__':
-    main()
