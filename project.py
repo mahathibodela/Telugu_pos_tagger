@@ -36,17 +36,17 @@ def predict():
     if request.method=='POST':
       text=request.form['text']
       new=text.split()
-      print(new)
-      print(text)
+      # print(new)
+      # print(text)
       decoded_input = text.encode('utf-8').decode('utf-8')
-      print(decoded_input)
-      print(type(text))
-      for i in text:
-        print(i)
+      # print(decoded_input)
+      # print(type(text))
+      # for i in text:
+      #   print(i)
       onehot_rep_input=[one_hot(text,2267)]
       input_codded=pad_sequences(onehot_rep_input,padding="post",maxlen=30)
-      print(input_codded)
-      print(len(onehot_rep_input[0]))
+      # print(input_codded)
+      # print(len(onehot_rep_input[0]))
       m=len(onehot_rep_input[0])
       # print(onehot_rep_input)
       
@@ -57,10 +57,10 @@ def predict():
       ans=[]
       dict={}
       k=len(text)
-      print(p)
+      # print(p)
       for i in range(0,m):
           ans.append(tags2id[p[0][i]])
-          print(tags2id[p[0][i]])
+          # print(tags2id[p[0][i]])
           dict[new[i]]=tags2id[p[0][i]]
       # print(ans)
       

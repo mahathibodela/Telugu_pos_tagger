@@ -1,3 +1,9 @@
+---
+title: Telugu_pos_tagger
+app_file: project.py
+sdk: gradio
+sdk_version: 4.29.0
+---
 # Telugu_pos_tagger
 
 This project goal is to attach pos tag for each word for a given Telugu sentence
