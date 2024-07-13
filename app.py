@@ -48,12 +48,8 @@ with columns[1]:
                 hashmap = dict()
                 for i in range(0,m):
                     hashmap[split_text[i]]=tags2id[list_input[0][i]]
-                output_list = hashmap.items()
-                output_list = [f'{item}' for item in output_list]
-                output = ','.join(output_list)
+                output_list = [f'{key}=>{val}' for key,val in hashmap.items()]
                 'The output being: '
                 with st.container(border=True):
-                    f'{output}'
-
-
-
+                    for item in output_list:
+                        f'{item}'
