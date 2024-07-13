@@ -1,74 +1,55 @@
 
-from flask import Flask, render_template, request, url_for
-import numpy as np  
+import numpy as np
 import pickle
+import tensorflow
 from tensorflow.keras.preprocessing.text import one_hot
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-tags2id={ 1:'CC',
- 2: 'DEM',
- 3: 'INTF',
- 4: 'JJ',
- 5: 'NN',
- 6: 'NNP',
- 7: 'NST',
- 8: 'PRP',
- 9: 'PSP',
- 10: 'QC',
- 11: 'QF',
- 12: 'QO',
- 13: 'RB',
- 14: 'RDP',
- 15: 'RP',
- 16: 'SYM',
- 17: 'UT',
- 18: 'VM',
- 19: 'WQ'}
 
-app = Flask(__name__)
-model=pickle.load(open('models/model.pkl','rb'))
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/predict',methods=['POST','GET'])
-def predict():
-    if request.method=='POST':
-      text=request.form['text']
-      new=text.split()
-      # print(new)
-      # print(text)
-      decoded_input = text.encode('utf-8').decode('utf-8')
-      # print(decoded_input)
-      # print(type(text))
-      # for i in text:
-      #   print(i)
-      onehot_rep_input=[one_hot(text,2267)]
-      input_codded=pad_sequences(onehot_rep_input,padding="post",maxlen=30)
-      # print(input_codded)
-      # print(len(onehot_rep_input[0]))
-      m=len(onehot_rep_input[0])
-      # print(onehot_rep_input)
-      
-      list_input=[]
-      list_input=model.predict(input_codded)
-      p=list_input
-      p = np.argmax(p, axis=-1)
-      ans=[]
-      dict={}
-      k=len(text)
-      # print(p)
-      for i in range(0,m):
-          ans.append(tags2id[p[0][i]])
-          # print(tags2id[p[0][i]])
-          dict[new[i]]=tags2id[p[0][i]]
-      # print(ans)
-      
-      return render_template('output.html',text=dict)
-    else:
-         return render_template('index.html')
-
-
-if __name__ == '__main__':
-   app.config['JSON_AS_ASCII'] = False
-   app.run()
+tags2id = {
+    1: 'CC',
+    2: 'DEM',
+    3: 'INTF',
+    4: 'JJ',
+    5: 'NN',
+    6: 'NNP',
+    7: 'NST',
+    8: 'PRP',
+    9: 'PSP',
+    10: 'QC',
+    11: 'QF',
+    12: 'QO',
+    13: 'RB',
+    14: 'RDP',
+    15: 'RP',
+    16: 'SYM',
+    17: 'UT',
+    18: 'VM',
+    19: 'WQ'
+}
+import streamlit as st
+columns = st.columns(2)
+with columns[0]:
+    with st.container(border=True):
+        st.session_state.input_text = st.text_area('Enter your text:')
+with columns[1]:
+    with st.container(border=True):
+        if st.button(label='Generate Tags'):
+            with st.status('loading model', expanded=True):
+                model=pickle.load(open('models/model.pkl','rb'))
+                "Model loaded"
+            with st.status('predicting POS tags', expanded = True):
+                split_text = st.session_state.input_text.split()
+                decoded_input = st.session_state.input_text.encode('utf-8').decode('utf-8')
+                onehot_rep_input=[one_hot(st.session_state.input_text,2267)]
+                m=len(onehot_rep_input[0])
+                input_codded=pad_sequences(onehot_rep_input,padding="post",maxlen=30)
+                list_input=model.predict(input_codded)
+                list_input = np.argmax(list_input, axis=-1)
+                hashmap = dict()
+                for i in range(0,m):
+                    hashmap[split_text[i]]=tags2id[list_input[0][i]]
+                output_list = [f'{key}=>{val}' for key,val in hashmap.items()]
+                'The output being: '
+                with st.container(border=True):
+                    for item in output_list:
+                        f'{item}'
